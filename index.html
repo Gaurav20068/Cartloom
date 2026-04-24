@@ -1,0 +1,2954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stuff™ — Simple. Timeless. Bright.</title>
+  <meta name="description" content="Curated objects designed to make your life brighter. Lighting, apparel, electronics and more."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ─────────────────────────────────────────────────────────────
+   STUFF™ — Production CSS v2
+   Design: Minimalist editorial × Apple-quality motion
+   New: Loader · Modal · 3D Tilt · Mobile Nav · Testimonials
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --black:   #0a0a0a;
+  --white:   #f8f6f1;
+  --cream:   #f2ede4;
+  --warm:    #e8e0d0;
+  --accent:  #2a2a2a;
+  --muted:   #8a8578;
+  --yellow:  #f5c842;
+  --green:   #4a7c59;
+  --ink:     #1a1a1a;
+  --red:     #e04848;
+
+  --font-display: 'Syne', sans-serif;
+  --font-serif:   'Instrument Serif', serif;
+  --font-mono:    'DM Mono', monospace;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --nav-h: 64px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+a { text-decoration: none; color: inherit; }
+button { cursor: none; font-family: inherit; }
+
+/* ══ LOADER ════════════════════════════════════════════════ */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.loader-inner {
+  text-align: center;
+}
+.loader-logo {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin-bottom: 16px;
+  animation: loaderPulse 1.4s ease-in-out infinite;
+}
+@keyframes loaderPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.loader-tagline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 32px;
+}
+.loader-bar-wrap {
+  width: 160px;
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+  margin: 0 auto;
+  overflow: hidden;
+}
+.loader-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--yellow);
+  transition: width 1.6s var(--ease-out);
+}
+
+/* ══ CUSTOM CURSOR ══════════════════════════════════════════ */
+#cursor {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--black);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s var(--ease-out), width 0.25s, height 0.25s,
+              border-color 0.2s, background 0.2s;
+  mix-blend-mode: multiply;
+}
+#cursor-dot {
+  position: fixed;
+  width: 5px; height: 5px;
+  background: var(--black);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+}
+body.cursor-hover #cursor {
+  width: 60px; height: 60px;
+  background: var(--black);
+  border-color: var(--black);
+  mix-blend-mode: multiply;
+}
+body.cursor-hover #cursor-dot { opacity: 0; }
+
+/* ══ BUTTONS ════════════════════════════════════════════════ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0;
+  transition: background 0.2s, transform 0.15s var(--ease-out);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--black);
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 2px;
+  transition: opacity 0.2s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.btn-ghost:hover { opacity: 0.6; }
+
+/* ══ NAV ════════════════════════════════════════════════════ */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: var(--nav-h);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+#nav.scrolled {
+  background: rgba(248, 246, 241, 0.92);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+}
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--black);
+}
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black);
+  transition: opacity 0.2s;
+}
+.nav-links a:hover { opacity: 0.5; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nav-cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: none;
+  border: 1.5px solid var(--black);
+  padding: 8px 16px;
+  color: var(--black);
+  transition: background 0.2s, color 0.2s;
+}
+.nav-cart-btn:hover {
+  background: var(--black);
+  color: var(--white);
+}
+.cart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  background: var(--yellow);
+  color: var(--black);
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  transition: transform 0.2s var(--spring);
+}
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 16px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--black);
+  transition: transform 0.3s var(--ease-out), opacity 0.3s;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile Nav Overlay ── */
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  transform: translateY(-100%);
+  transition: transform 0.5s var(--ease-out);
+}
+.mobile-nav-overlay.open {
+  transform: translateY(0);
+}
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+.mobile-nav-links a {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 8vw, 56px);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+.mobile-nav-links a:hover { opacity: 0.5; }
+.mobile-nav-footer {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ══ HERO ═══════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 680px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.hero-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+#hero-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.7;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  padding-top: var(--nav-h);
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.4s var(--ease-out) forwards;
+}
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 10vw, 148px);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.55s var(--ease-out) forwards;
+}
+.hero-headline em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+.hero-sub {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 380px;
+  line-height: 1.65;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.7s var(--ease-out) forwards;
+}
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.85s var(--ease-out) forwards;
+}
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeUp 0.9s 1.2s var(--ease-out) forwards;
+}
+.scroll-track {
+  width: 1px;
+  height: 48px;
+  background: rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-thumb {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 40%;
+  background: var(--black);
+  animation: scrollDown 2s ease-in-out infinite;
+}
+@keyframes scrollDown {
+  0%   { top: -40%; }
+  100% { top: 140%; }
+}
+
+/* Hero rotating badge */
+.hero-badge {
+  position: absolute;
+  right: 120px;
+  bottom: 80px;
+  z-index: 2;
+  width: 80px; height: 80px;
+  animation: rotateBadge 12s linear infinite, fadeUp 0.9s 1.4s var(--ease-out) both;
+}
+.hero-badge-inner {
+  width: 100%; height: 100%;
+  border: 1.5px solid rgba(0,0,0,0.2);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.8;
+}
+@keyframes rotateBadge {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ══ MARQUEE ════════════════════════════════════════════════ */
+.marquee-strip {
+  background: var(--black);
+  color: var(--white);
+  overflow: hidden;
+  padding: 14px 0;
+}
+.marquee-inner {
+  display: flex;
+  gap: 32px;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.marquee-dot { opacity: 0.35; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ══ FEATURE SECTION ════════════════════════════════════════ */
+.feature-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 90vh;
+  overflow: hidden;
+}
+.feature-section.feature-reverse { direction: rtl; }
+.feature-section.feature-reverse > * { direction: ltr; }
+
+.feature-media {
+  position: relative;
+  background: var(--warm);
+  overflow: hidden;
+}
+.feature-img-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+.feature-img {
+  width: auto;
+  height: auto;
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  transition: transform 0.1s linear;
+}
+.feature-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 72px;
+  background: var(--white);
+}
+.feature-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.feature-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 5vw, 80px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: 28px;
+}
+.feature-title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+.feature-desc {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 360px;
+  margin-bottom: 32px;
+}
+.feature-price {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+.feature-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+/* ══ SHOP GRID ═══════════════════════════════════════════════ */
+.shop-section {
+  padding: 100px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.shop-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3.5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+}
+.filter-tab {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid rgba(0,0,0,0.12);
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.filter-tab.active, .filter-tab:hover {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+/* ── Product Card ── */
+.product-card {
+  position: relative;
+  cursor: none;
+  will-change: transform;
+  transition: box-shadow 0.3s;
+}
+.product-card:hover .product-img {
+  transform: scale(1.04);
+}
+.product-img-wrap {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--warm);
+  margin-bottom: 20px;
+}
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+.product-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,10,0.3);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.product-card:hover .product-overlay { opacity: 1; }
+.quick-add {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--white);
+  color: var(--black);
+  border: none;
+  padding: 12px 24px;
+  transform: translateY(8px);
+  transition: transform 0.3s var(--ease-out);
+}
+.product-card:hover .quick-add { transform: translateY(0); }
+.quick-add:hover { background: var(--yellow); }
+
+.product-tag-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--white);
+  color: var(--black);
+  padding: 5px 10px;
+}
+.product-new-badge {
+  position: absolute;
+  top: 16px;
+  right: 52px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--yellow);
+  color: var(--black);
+  padding: 5px 10px;
+  font-weight: 600;
+}
+
+/* Wishlist heart */
+.wishlist-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px; height: 32px;
+  background: var(--white);
+  border: none;
+  border-radius: 50%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s var(--spring), color 0.2s;
+  color: var(--muted);
+  z-index: 2;
+}
+.wishlist-btn:hover,
+.wishlist-btn.active {
+  color: var(--red);
+  transform: scale(1.15);
+}
+.wishlist-btn.active { color: var(--red); }
+
+.product-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.product-price {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+}
+.product-rating {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.product-stock {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--red);
+  letter-spacing: 0.04em;
+}
+.product-blurb {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ══ PHILOSOPHY ════════════════════════════════════════════ */
+.philosophy-section {
+  padding: 120px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.philosophy-inner {
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+  margin-bottom: 80px;
+  padding-bottom: 80px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.philosophy-number {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  flex-shrink: 0;
+  padding-top: 6px;
+}
+.philosophy-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(24px, 2.8vw, 40px);
+  line-height: 1.3;
+  font-weight: 400;
+  color: var(--black);
+}
+.philosophy-quote cite {
+  display: block;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 20px;
+  letter-spacing: 0.06em;
+}
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+.philosophy-card {
+  padding: 40px 0;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.philo-icon {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: var(--muted);
+}
+.philosophy-card h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.philosophy-card p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* ══ TESTIMONIALS ══════════════════════════════════════════ */
+.testimonials-section {
+  padding: 100px 40px;
+  background: var(--cream);
+  overflow: hidden;
+}
+.testimonials-header {
+  max-width: 1400px;
+  margin: 0 auto 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.testimonials-nav {
+  display: flex;
+  gap: 8px;
+}
+.testi-nav-btn {
+  width: 40px; height: 40px;
+  background: none;
+  border: 1.5px solid var(--black);
+  font-size: 16px;
+  font-family: var(--font-mono);
+  color: var(--black);
+  transition: background 0.2s, color 0.2s;
+}
+.testi-nav-btn:hover {
+  background: var(--black);
+  color: var(--white);
+}
+.testimonials-track-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.testimonials-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.5s var(--ease-out);
+}
+.testimonial-card {
+  min-width: calc(33.333% - 16px);
+  background: var(--white);
+  padding: 40px 36px;
+  flex-shrink: 0;
+}
+.testi-stars {
+  font-size: 14px;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+.testi-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--black);
+  margin-bottom: 24px;
+}
+.testi-author {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.testi-product {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* ══ STATS ══════════════════════════════════════════════════ */
+.stats-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 100px 40px;
+  background: var(--black);
+  color: var(--white);
+}
+.stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 0 40px;
+}
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 5vw, 80px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 12px;
+  color: var(--yellow);
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.stat-divider {
+  width: 1px;
+  height: 80px;
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+/* ══ NEWSLETTER ════════════════════════════════════════════ */
+.newsletter-section {
+  background: var(--yellow);
+  padding: 100px 40px;
+}
+.newsletter-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+.newsletter-copy h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3.5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.newsletter-copy p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(0,0,0,0.55);
+  max-width: 320px;
+  line-height: 1.6;
+}
+.newsletter-form {
+  display: flex;
+  gap: 0;
+  flex-shrink: 0;
+}
+.newsletter-input {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 14px 24px;
+  border: 1.5px solid var(--black);
+  border-right: none;
+  background: rgba(255,255,255,0.7);
+  outline: none;
+  min-width: 280px;
+  color: var(--black);
+}
+.newsletter-input::placeholder { color: rgba(0,0,0,0.4); }
+.newsletter-input:focus { background: rgba(255,255,255,0.95); }
+.newsletter-form .btn-primary { border: 1.5px solid var(--black); }
+
+/* ══ FOOTER ═════════════════════════════════════════════════ */
+.site-footer {
+  background: var(--black);
+  color: var(--white);
+  padding: 80px 40px 40px;
+}
+.footer-top {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 40px;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.footer-tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 8px;
+}
+.footer-address {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.06em;
+}
+.footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 20px;
+}
+.footer-col a {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 12px;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--white); }
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.05em;
+}
+
+/* ══ CART DRAWER ════════════════════════════════════════════ */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  z-index: 200;
+  pointer-events: none;
+  transition: background 0.3s;
+}
+.cart-overlay.open {
+  background: rgba(0,0,0,0.4);
+  pointer-events: auto;
+}
+.cart-drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 400px;
+  background: var(--white);
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.4s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(0,0,0,0.08);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 32px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.cart-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.cart-close {
+  font-size: 16px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.cart-close:hover { color: var(--black); }
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+}
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  gap: 12px;
+}
+.cart-empty-icon { font-size: 48px; color: var(--warm); }
+.cart-empty p { font-family: var(--font-display); font-size: 16px; font-weight: 700; }
+.cart-empty span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+.cart-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  align-items: center;
+}
+.cart-item-img {
+  width: 64px; height: 64px;
+  background: var(--warm);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+.cart-item-info { flex: 1; }
+.cart-item-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.cart-item-price {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* Cart qty controls */
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cart-qty-btn {
+  width: 22px; height: 22px;
+  background: var(--warm);
+  border: none;
+  font-size: 14px;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  transition: background 0.15s;
+}
+.cart-qty-btn:hover { background: var(--black); color: var(--white); }
+.cart-qty-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  min-width: 16px;
+  text-align: center;
+}
+.cart-item-remove {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  text-decoration: underline;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.cart-item-remove:hover { color: var(--red); }
+.cart-footer {
+  padding: 24px 32px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.btn-checkout {
+  width: 100%;
+  padding: 16px;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  transition: background 0.2s;
+}
+.btn-checkout:hover { background: #222; }
+
+/* ══ PRODUCT MODAL ════════════════════════════════════════ */
+.product-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,10,0.6);
+  backdrop-filter: blur(6px);
+}
+.modal-card {
+  position: relative;
+  background: var(--white);
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  animation: modalIn 0.45s var(--spring) both;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.92) translateY(24px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-close-btn {
+  position: absolute;
+  top: 20px; right: 20px;
+  z-index: 10;
+  width: 36px; height: 36px;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.modal-close-btn:hover { background: #333; }
+.modal-img-col {
+  background: var(--warm);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.modal-img-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  overflow: hidden;
+}
+.modal-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-height: 400px;
+}
+.modal-img-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px;
+}
+.modal-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.modal-dot.active { background: var(--black); }
+
+.modal-info-col {
+  padding: 48px 44px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.modal-tag-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+.modal-description {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.modal-price-line {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.modal-rating-row {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.modal-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+.modal-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.modal-qty-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.modal-qty-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1.5px solid rgba(0,0,0,0.12);
+}
+.qty-btn {
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-family: var(--font-mono);
+  color: var(--black);
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-btn:hover { background: var(--warm); }
+#modal-qty-val {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  min-width: 36px;
+  text-align: center;
+}
+.modal-cta {
+  width: 100%;
+  margin-bottom: 24px;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  padding: 16px;
+}
+.modal-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+.modal-perk {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* ══ BACK TO TOP ════════════════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 50;
+  width: 44px; height: 44px;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  font-size: 18px;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s, transform 0.3s var(--ease-out);
+  pointer-events: none;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: var(--yellow);
+  color: var(--black);
+}
+
+/* ══ TOAST ══════════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding: 14px 28px;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 300;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ══ REVEAL ANIMATIONS ══════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══ KEYFRAMES ══════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ RESPONSIVE ═════════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 1024px) {
+  .feature-section { grid-template-columns: 1fr; min-height: auto; }
+  .feature-img-wrap { position: relative; height: 60vw; }
+  .feature-copy { padding: 60px 40px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .philosophy-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .testimonial-card { min-width: calc(50% - 12px); }
+  .modal-card { grid-template-columns: 1fr; max-width: 500px; }
+  .modal-img-wrap { max-height: 300px; }
+}
+
+@media (max-width: 768px) {
+  :root { --nav-h: 56px; }
+  .nav-inner { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero-content { padding: 0 20px; padding-top: var(--nav-h); }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .shop-section { padding: 60px 20px; }
+  .shop-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .filter-tabs { flex-wrap: wrap; }
+  .philosophy-section { padding: 80px 20px; }
+  .philosophy-inner { flex-direction: column; gap: 32px; }
+  .stats-section { flex-direction: column; gap: 40px; }
+  .stat-divider { width: 80px; height: 1px; }
+  .newsletter-section { padding: 60px 20px; }
+  .newsletter-inner { flex-direction: column; }
+  .newsletter-form { width: 100%; }
+  .newsletter-input { min-width: unset; flex: 1; }
+  .footer-top { grid-template-columns: 1fr; gap: 40px; }
+  .site-footer { padding: 60px 20px 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; }
+  .cart-drawer { width: 100%; }
+  .hero-scroll-hint { display: none; }
+  .hero-badge { display: none; }
+  .feature-section.feature-reverse { direction: ltr; }
+  .testimonials-section { padding: 60px 20px; }
+  .testimonial-card { min-width: calc(85vw); }
+  .back-to-top { right: 20px; bottom: 24px; }
+  .product-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr; }
+  .hero-cta-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOADER ══════════════════════════════════════════════════ -->
+<div id="loader" class="loader">
+  <div class="loader-inner">
+    <div class="loader-logo">Stuff™</div>
+    <div class="loader-tagline">Just loading something beautiful</div>
+    <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+  </div>
+</div>
+
+<!-- ══ CUSTOM CURSOR ════════════════════════════════════════════ -->
+<div id="cursor"></div>
+<div id="cursor-dot"></div>
+
+<!-- ══ CART DRAWER ══════════════════════════════════════════════ -->
+<div id="cart-overlay" class="cart-overlay"></div>
+<div id="cart-drawer" class="cart-drawer">
+  <div class="cart-header">
+    <span class="cart-title">Your Cart</span>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div id="cart-items" class="cart-items">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">○</div>
+      <p>Nothing here yet.</p>
+      <span>Add something beautiful.</span>
+    </div>
+  </div>
+  <div id="cart-footer" class="cart-footer" style="display:none">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span id="cart-total-price">₹0</span>
+    </div>
+    <button class="btn-checkout">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<!-- ══ PRODUCT MODAL ════════════════════════════════════════════ -->
+<div id="product-modal" class="product-modal" style="display:none">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-card">
+    <button class="modal-close-btn" onclick="closeModal()">✕</button>
+    <div class="modal-img-col">
+      <div class="modal-img-wrap">
+        <img id="modal-img" src="" alt="" loading="lazy"/>
+      </div>
+      <div class="modal-img-dots">
+        <span class="modal-dot active"></span>
+        <span class="modal-dot"></span>
+        <span class="modal-dot"></span>
+      </div>
+    </div>
+    <div class="modal-info-col">
+      <div id="modal-tag" class="modal-tag-label"></div>
+      <h2 id="modal-name" class="modal-title"></h2>
+      <p id="modal-desc" class="modal-description"></p>
+      <div id="modal-price" class="modal-price-line"></div>
+      <div id="modal-rating" class="modal-rating-row"></div>
+      <div class="modal-divider"></div>
+      <div class="modal-qty-row">
+        <span class="modal-qty-label">Qty</span>
+        <div class="modal-qty-ctrl">
+          <button class="qty-btn" onclick="changeModalQty(-1)">−</button>
+          <span id="modal-qty-val">1</span>
+          <button class="qty-btn" onclick="changeModalQty(1)">+</button>
+        </div>
+      </div>
+      <button class="btn-primary modal-cta" id="modal-add-btn">Add to Cart</button>
+      <div class="modal-perks">
+        <div class="modal-perk">◐ Handmade in Ohio</div>
+        <div class="modal-perk">◯ Free shipping over ₹5,000</div>
+        <div class="modal-perk">◑ 30-day returns</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MOBILE NAV OVERLAY ════════════════════════════════════ -->
+<div id="mobile-nav-overlay" class="mobile-nav-overlay">
+  <div class="mobile-nav-links">
+    <a href="#shop" onclick="closeMobileNav()">Shop</a>
+    <a href="#lighting" onclick="closeMobileNav()">Lighting</a>
+    <a href="#about" onclick="closeMobileNav()">About</a>
+  </div>
+  <div class="mobile-nav-footer">
+    <span>Est. Foster, OH — 2020</span>
+  </div>
+</div>
+
+<!-- ══ NAV ═══════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Stuff™</a>
+    <div class="nav-links">
+      <a href="#shop">Shop</a>
+      <a href="#lighting">Lighting</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-cart-btn" onclick="toggleCart()">
+        Cart <span id="cart-count" class="cart-badge">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ═══════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-canvas-wrap">
+    <canvas id="hero-canvas"></canvas>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Est. Foster, OH — 2020</div>
+    <h1 class="hero-headline">
+      Simple.<br/>
+      <em>Timeless.</em><br/>
+      Bright.
+    </h1>
+    <p class="hero-sub">Objects designed to last. Made with love, built to improve your everyday.</p>
+    <div class="hero-cta-row">
+      <a href="#shop" class="btn-primary">Shop all Stuff</a>
+      <a href="#about" class="btn-ghost">Our story →</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-track"><div class="scroll-thumb"></div></div>
+    <span>Scroll</span>
+  </div>
+  <div class="hero-badge">
+    <div class="hero-badge-inner">
+      <span>New</span>
+      <span>Drop</span>
+      <span>2025</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MARQUEE ════════════════════════════════════════════════ -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Simple Design</span><span class="marquee-dot">·</span>
+    <span>Timeless Objects</span><span class="marquee-dot">·</span>
+    <span>Live Brighter</span><span class="marquee-dot">·</span>
+    <span>Made in Ohio</span><span class="marquee-dot">·</span>
+    <span>Open Source</span><span class="marquee-dot">·</span>
+    <span>Just in Time</span><span class="marquee-dot">·</span>
+    <span>Simple Design</span><span class="marquee-dot">·</span>
+    <span>Timeless Objects</span><span class="marquee-dot">·</span>
+    <span>Live Brighter</span><span class="marquee-dot">·</span>
+    <span>Made in Ohio</span><span class="marquee-dot">·</span>
+    <span>Open Source</span><span class="marquee-dot">·</span>
+    <span>Just in Time</span><span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- ══ FEATURED PRODUCT (Full bleed) ══════════════════════════ -->
+<section class="feature-section reveal" id="feature-lamp">
+  <div class="feature-media">
+    <div class="feature-img-wrap">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&h=900&fit=crop&q=80"
+           alt="Swing Dome Light" class="feature-img parallax-img" data-speed="0.15"/>
+    </div>
+  </div>
+  <div class="feature-copy">
+    <div class="feature-tag">— Lighting</div>
+    <h2 class="feature-title">Swing Dome<br/><em>Light</em></h2>
+    <p class="feature-desc">A wall light that pivots with your life. Oak arm, matte steel shade, brass hardware. Adjustable for reading, ambience, or both.</p>
+    <div class="feature-price">from ₹29,000</div>
+    <div class="feature-btn-row">
+      <button class="btn-primary" onclick="addToCart('Swing Dome Light','₹29,000',29000,'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&fit=crop')">Add to Cart</button>
+      <button class="btn-ghost" onclick="openModal('swing-dome-light')">View Details →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SHOP GRID ══════════════════════════════════════════════ -->
+<section class="shop-section" id="shop">
+  <div class="shop-header">
+    <h2 class="section-title">All Stuff</h2>
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="lighting">Lighting</button>
+      <button class="filter-tab" data-filter="apparel">Apparel</button>
+      <button class="filter-tab" data-filter="objects">Objects</button>
+    </div>
+  </div>
+
+  <div class="product-grid" id="product-grid">
+
+    <!-- 1 -->
+    <article class="product-card reveal tilt-card" data-category="lighting" data-product-id="swing-dome-light">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop&q=80"
+             alt="Swing Dome Light" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Swing Dome Light','₹29,000',29000,'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Lighting</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+        <div class="product-new-badge">New</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Swing Dome Light</h3>
+        <div class="product-meta">
+          <span class="product-price">from ₹29,000</span>
+          <span class="product-rating">★ 4.9</span>
+        </div>
+        <p class="product-blurb">Adjustable arm. Matte black. Oak wood grip.</p>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="product-card reveal tilt-card" data-category="apparel" data-product-id="s-cap">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=600&fit=crop&q=80"
+             alt="Ⓢ Cap" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Ⓢ Cap','₹1,299',1299,'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Apparel</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Ⓢ Cap</h3>
+        <div class="product-meta">
+          <span class="product-price">₹1,299</span>
+          <span class="product-stock">Only 1 left</span>
+        </div>
+        <p class="product-blurb">100% cotton. Embroidered logo. One size.</p>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="product-card reveal tilt-card" data-category="objects" data-product-id="discourse-recorder">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=600&fit=crop&q=80"
+             alt="Discourse Recorder" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Discourse Recorder','₹199',199,'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Object</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Discourse Recorder</h3>
+        <div class="product-meta">
+          <span class="product-price">from ₹199</span>
+          <span class="product-rating">★ 5.0</span>
+        </div>
+        <p class="product-blurb">Chess clock repurposed. Time your conversations.</p>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="product-card reveal tilt-card" data-category="objects" data-product-id="sun-pin">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1559181567-c3190100e21c?w=600&h=600&fit=crop&q=80"
+             alt="Sun Pin" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Sun Pin','₹830',830,'https://images.unsplash.com/photo-1559181567-c3190100e21c?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Object</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Sun Pin</h3>
+        <div class="product-meta">
+          <span class="product-price">₹830</span>
+          <span class="product-rating">★ 4.8</span>
+        </div>
+        <p class="product-blurb">Live brighter. Stainless steel. Made in Ohio.</p>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="product-card reveal tilt-card" data-category="lighting" data-product-id="dune-light">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=600&h=600&fit=crop&q=80"
+             alt="Dune Light" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Dune Light','₹20,750',20750,'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Lighting</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+        <div class="product-new-badge">New</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Dune Light</h3>
+        <div class="product-meta">
+          <span class="product-price">from ₹20,750</span>
+          <span class="product-rating">★ 4.9</span>
+        </div>
+        <p class="product-blurb">Mountain-form pendant. Sage green. Pure sculpture.</p>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="product-card reveal tilt-card" data-category="apparel" data-product-id="less-junk-cap">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1521369909029-2afed882baaa?w=600&h=600&fit=crop&q=80"
+             alt="Less Junk Cap" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Less Junk Cap','₹1,660',1660,'https://images.unsplash.com/photo-1521369909029-2afed882baaa?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Apparel</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Less Junk Cap</h3>
+        <div class="product-meta">
+          <span class="product-price">₹1,660</span>
+          <span class="product-stock">Only 4 left</span>
+        </div>
+        <p class="product-blurb">Vintage wash. Embroidered. Less is more.</p>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="product-card reveal tilt-card" data-category="lighting" data-product-id="arc-floor-lamp">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=600&fit=crop&q=80"
+             alt="Arc Floor Lamp" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Arc Floor Lamp','₹34,500',34500,'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Lighting</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Arc Floor Lamp</h3>
+        <div class="product-meta">
+          <span class="product-price">from ₹34,500</span>
+          <span class="product-rating">★ 4.7</span>
+        </div>
+        <p class="product-blurb">Brushed steel arc. Marble base. Minimal form.</p>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="product-card reveal tilt-card" data-category="objects" data-product-id="still-life-vase">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=600&h=600&fit=crop&q=80"
+             alt="Still Life Vase" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Still Life Vase','₹3,200',3200,'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Object</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Still Life Vase</h3>
+        <div class="product-meta">
+          <span class="product-price">₹3,200</span>
+          <span class="product-rating">★ 4.9</span>
+        </div>
+        <p class="product-blurb">Matte ceramic. Earth tones. Hold something alive.</p>
+      </div>
+    </article>
+
+    <!-- 9 -->
+    <article class="product-card reveal tilt-card" data-category="apparel" data-product-id="minimal-tee">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop&q=80"
+             alt="Minimal Tee" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Minimal Tee','₹1,850',1850,'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Apparel</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Minimal Tee</h3>
+        <div class="product-meta">
+          <span class="product-price">₹1,850</span>
+          <span class="product-rating">★ 4.8</span>
+        </div>
+        <p class="product-blurb">100% organic cotton. Screen printed logo.</p>
+      </div>
+    </article>
+
+    <!-- 10 -->
+    <article class="product-card reveal tilt-card" data-category="objects" data-product-id="oak-coasters">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=600&fit=crop&q=80"
+             alt="Oak Coaster Set" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Oak Coaster Set','₹1,100',1100,'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Object</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Oak Coaster Set</h3>
+        <div class="product-meta">
+          <span class="product-price">₹1,100</span>
+          <span class="product-rating">★ 5.0</span>
+        </div>
+        <p class="product-blurb">Set of 4. White oak. Protect with intention.</p>
+      </div>
+    </article>
+
+    <!-- 11 -->
+    <article class="product-card reveal tilt-card" data-category="lighting" data-product-id="orb-table-light">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1565814329452-e1efa11ef3a4?w=600&h=600&fit=crop&q=80"
+             alt="Orb Table Light" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Orb Table Light','₹12,400',12400,'https://images.unsplash.com/photo-1565814329452-e1efa11ef3a4?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Lighting</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Orb Table Light</h3>
+        <div class="product-meta">
+          <span class="product-price">from ₹12,400</span>
+          <span class="product-rating">★ 4.8</span>
+        </div>
+        <p class="product-blurb">Blown glass globe. Warm amber glow. Simple.</p>
+      </div>
+    </article>
+
+    <!-- 12 -->
+    <article class="product-card reveal tilt-card" data-category="apparel" data-product-id="stuff-hoodie">
+      <div class="product-img-wrap">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&h=600&fit=crop&q=80"
+             alt="Stuff Hoodie" class="product-img"/>
+        <div class="product-overlay">
+          <button class="quick-add" onclick="event.stopPropagation();addToCart('Stuff Hoodie','₹4,200',4200,'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=400&fit=crop')">+ Quick Add</button>
+        </div>
+        <div class="product-tag-badge">Apparel</div>
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)" aria-label="Wishlist">♡</button>
+        <div class="product-new-badge">New</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">Stuff Hoodie</h3>
+        <div class="product-meta">
+          <span class="product-price">₹4,200</span>
+          <span class="product-stock">Only 6 left</span>
+        </div>
+        <p class="product-blurb">Mid-weight fleece. Front pocket. Always cozy.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ══ FEATURED DUNE LIGHT ════════════════════════════════════ -->
+<section class="feature-section feature-reverse reveal" id="lighting">
+  <div class="feature-media">
+    <div class="feature-img-wrap">
+      <img src="https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=900&h=900&fit=crop&q=80"
+           alt="Dune Light" class="feature-img parallax-img" data-speed="0.12"/>
+    </div>
+  </div>
+  <div class="feature-copy">
+    <div class="feature-tag">— Pendant Lighting</div>
+    <h2 class="feature-title">Dune<br/><em>Light</em></h2>
+    <p class="feature-desc">Five conical shades arranged like a mountain range. Powder-coated sage green. Available in multiple configurations.</p>
+    <div class="feature-price">from ₹20,750</div>
+    <div class="feature-btn-row">
+      <button class="btn-primary" onclick="addToCart('Dune Light','₹20,750',20750,'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&fit=crop')">Add to Cart</button>
+      <button class="btn-ghost" onclick="openModal('dune-light')">View Details →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS SCROLL STRIP ═════════════════════════════ -->
+<section class="testimonials-section reveal">
+  <div class="testimonials-header">
+    <h2 class="section-title">What people say</h2>
+    <div class="testimonials-nav">
+      <button class="testi-nav-btn" id="testi-prev">←</button>
+      <button class="testi-nav-btn" id="testi-next">→</button>
+    </div>
+  </div>
+  <div class="testimonials-track-wrap">
+    <div class="testimonials-track" id="testi-track">
+      <div class="testimonial-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The Swing Dome Light is genuinely the most beautiful object in my apartment. Worth every rupee."</p>
+        <div class="testi-author">— Priya M., Mumbai</div>
+        <div class="testi-product">Swing Dome Light</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I've ordered three caps now. The quality is unreal for the price. The embroidery alone is worth it."</p>
+        <div class="testi-author">— Arjun K., Bangalore</div>
+        <div class="testi-product">Ⓢ Cap</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The Dune Light changed the entire atmosphere of my studio. People ask about it every time they visit."</p>
+        <div class="testi-author">— Rohan D., Delhi</div>
+        <div class="testi-product">Dune Light</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Fast shipping, beautiful packaging, and the product exceeded my expectations. Stuff™ gets it right."</p>
+        <div class="testi-author">— Ananya S., Pune</div>
+        <div class="testi-product">Sun Pin</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The Discourse Recorder is such a clever concept. We use it at every dinner party now."</p>
+        <div class="testi-author">— Vikram R., Chennai</div>
+        <div class="testi-product">Discourse Recorder</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PHILOSOPHY ════════════════════════════════════════════ -->
+<section class="philosophy-section reveal" id="about">
+  <div class="philosophy-inner">
+    <div class="philosophy-number">01</div>
+    <blockquote class="philosophy-quote">
+      "Re-improve what was improved<br/>for further improvement."
+      <cite>— Taiichi Ohno</cite>
+    </blockquote>
+  </div>
+  <div class="philosophy-grid">
+    <div class="philosophy-card reveal">
+      <div class="philo-icon">◐</div>
+      <h3>Simple Design</h3>
+      <p>Every element earns its place. Nothing decorative for decoration's sake. Function leads, beauty follows.</p>
+    </div>
+    <div class="philosophy-card reveal">
+      <div class="philo-icon">◯</div>
+      <h3>Timeless Objects</h3>
+      <p>We design for 20 years from now. Classic materials, honest construction, no trend-chasing.</p>
+    </div>
+    <div class="philosophy-card reveal">
+      <div class="philo-icon">◑</div>
+      <h3>Open Source</h3>
+      <p>Our production process is public. We share discoveries because better design benefits everyone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══════════════════════════════════════════════════ -->
+<section class="stats-section reveal">
+  <div class="stat-item">
+    <div class="stat-number" data-target="12000">0</div>
+    <div class="stat-label">Objects Made</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="98">0</div>
+    <div class="stat-label">% Satisfaction</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="4">0</div>
+    <div class="stat-label">Years Running</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="100">0</div>
+    <div class="stat-label">% Open Source</div>
+  </div>
+</section>
+
+<!-- ══ NEWSLETTER ════════════════════════════════════════════ -->
+<section class="newsletter-section reveal">
+  <div class="newsletter-inner">
+    <div class="newsletter-copy">
+      <h2>The Newsletter™</h2>
+      <p>Occasional updates on new Stuff, process notes, and ideas worth sharing.</p>
+    </div>
+    <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+      <input type="email" placeholder="your@email.com" required class="newsletter-input"/>
+      <button type="submit" class="btn-primary">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">Stuff™</div>
+      <p class="footer-tagline">Simple design, just in time.</p>
+      <p class="footer-address">Foster, OH · Made with ♥</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#shop">All Products</a>
+      <a href="#lighting">Lighting</a>
+      <a href="#shop">Apparel</a>
+      <a href="#shop">Objects</a>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <a href="#about">About</a>
+      <a href="#">Open Source</a>
+      <a href="#">Shipping</a>
+      <a href="#">Returns</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="#">Instagram</a>
+      <a href="#">Newsletter™</a>
+      <a href="#">1 (800) 867-5319</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Stuff by Andrew Neyer · All rights reserved</span>
+    <span>Privacy · Terms</span>
+  </div>
+</footer>
+
+<!-- ══ BACK TO TOP ═══════════════════════════════════════════ -->
+<button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- ══ TOAST ════════════════════════════════════════════════ -->
+<div id="toast" class="toast"></div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ─────────────────────────────────────────────────────────────
+   STUFF™ — main.js v2
+   Three.js hero · 3D Card Tilt · Product Modal · Cart +/−
+   Mobile Nav · Wishlist · Testimonials · Back to Top · Loader
+   ───────────────────────────────────────────────────────────── */
+
+'use strict';
+
+/* ══════════════════════════════════════════════════════════════
+   PRODUCT DATA — single source of truth for the modal
+   ══════════════════════════════════════════════════════════════ */
+const PRODUCTS = {
+  'swing-dome-light': {
+    name: 'Swing Dome Light',
+    tag: 'Lighting',
+    price: '₹29,000',
+    priceNum: 29000,
+    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop&q=80',
+    desc: 'A wall light that pivots with your life. Oak arm, matte steel shade, brass hardware. Adjustable for reading, ambience, or both. Each fixture is handmade in Foster, Ohio.',
+    rating: '★★★★★ 4.9 (47 reviews)',
+    category: 'lighting',
+  },
+  's-cap': {
+    name: 'Ⓢ Cap',
+    tag: 'Apparel',
+    price: '₹1,299',
+    priceNum: 1299,
+    img: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&h=800&fit=crop&q=80',
+    desc: '100% unstructured cotton twill. Embroidered Ⓢ logo on the front. Adjustable strap at the back. One size. Washes like a dream.',
+    rating: '★★★★★ 4.7 (83 reviews)',
+    category: 'apparel',
+  },
+  'discourse-recorder': {
+    name: 'Discourse Recorder',
+    tag: 'Object',
+    price: '₹199',
+    priceNum: 199,
+    img: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&h=800&fit=crop&q=80',
+    desc: 'A chess clock reimagined as a conversational tool. Press your button when you start talking. An honest record of who holds the floor.',
+    rating: '★★★★★ 5.0 (29 reviews)',
+    category: 'objects',
+  },
+  'sun-pin': {
+    name: 'Sun Pin',
+    tag: 'Object',
+    price: '₹830',
+    priceNum: 830,
+    img: 'https://images.unsplash.com/photo-1559181567-c3190100e21c?w=800&h=800&fit=crop&q=80',
+    desc: 'A small brass sun. Wear it on your lapel, your bag, or your hat. Made from 316L stainless steel. A reminder to live brighter.',
+    rating: '★★★★★ 4.8 (112 reviews)',
+    category: 'objects',
+  },
+  'dune-light': {
+    name: 'Dune Light',
+    tag: 'Lighting',
+    price: '₹20,750',
+    priceNum: 20750,
+    img: 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=800&h=800&fit=crop&q=80',
+    desc: 'Five conical shades arranged like a mountain range. Powder-coated sage green steel. Available in single, three-shade, and five-shade configurations.',
+    rating: '★★★★★ 4.9 (64 reviews)',
+    category: 'lighting',
+  },
+  'less-junk-cap': {
+    name: 'Less Junk Cap',
+    tag: 'Apparel',
+    price: '₹1,660',
+    priceNum: 1660,
+    img: 'https://images.unsplash.com/photo-1521369909029-2afed882baaa?w=800&h=800&fit=crop&q=80',
+    desc: 'Vintage washed cotton. "Less Junk" embroidered in your choice of thread color. A gentle manifesto you can wear on your head.',
+    rating: '★★★★☆ 4.6 (38 reviews)',
+    category: 'apparel',
+  },
+  'arc-floor-lamp': {
+    name: 'Arc Floor Lamp',
+    tag: 'Lighting',
+    price: '₹34,500',
+    priceNum: 34500,
+    img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&h=800&fit=crop&q=80',
+    desc: 'A brushed steel arc over a solid marble base. Three brightness settings. The lamp that makes every corner of the room better.',
+    rating: '★★★★★ 4.7 (21 reviews)',
+    category: 'lighting',
+  },
+  'still-life-vase': {
+    name: 'Still Life Vase',
+    tag: 'Object',
+    price: '₹3,200',
+    priceNum: 3200,
+    img: 'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&h=800&fit=crop&q=80',
+    desc: 'Hand-thrown stoneware in matte earth tones. Each vase is slightly different. Perfect for a single stem or left beautifully empty.',
+    rating: '★★★★★ 4.9 (57 reviews)',
+    category: 'objects',
+  },
+  'minimal-tee': {
+    name: 'Minimal Tee',
+    tag: 'Apparel',
+    price: '₹1,850',
+    priceNum: 1850,
+    img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=800&fit=crop&q=80',
+    desc: '180gsm 100% organic ring-spun cotton. Screen-printed Stuff™ mark on the chest. Slightly relaxed fit. Sizes XS–2XL.',
+    rating: '★★★★☆ 4.8 (93 reviews)',
+    category: 'apparel',
+  },
+  'oak-coasters': {
+    name: 'Oak Coaster Set',
+    tag: 'Object',
+    price: '₹1,100',
+    priceNum: 1100,
+    img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=800&fit=crop&q=80',
+    desc: 'Set of four white oak coasters, hand-cut and lightly oiled. They will develop a beautiful patina over time. Protect things you love.',
+    rating: '★★★★★ 5.0 (44 reviews)',
+    category: 'objects',
+  },
+  'orb-table-light': {
+    name: 'Orb Table Light',
+    tag: 'Lighting',
+    price: '₹12,400',
+    priceNum: 12400,
+    img: 'https://images.unsplash.com/photo-1565814329452-e1efa11ef3a4?w=800&h=800&fit=crop&q=80',
+    desc: 'Mouth-blown borosilicate glass globe on a solid brass base. Warm 2700K LED bulb included. A perfect small light for any surface.',
+    rating: '★★★★★ 4.8 (31 reviews)',
+    category: 'lighting',
+  },
+  'stuff-hoodie': {
+    name: 'Stuff Hoodie',
+    tag: 'Apparel',
+    price: '₹4,200',
+    priceNum: 4200,
+    img: 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=800&h=800&fit=crop&q=80',
+    desc: 'Mid-weight 320gsm fleece hoodie. Kangaroo front pocket. Ribbed cuffs and hem. Sizes XS–2XL. The most comfortable thing we make.',
+    rating: '★★★★★ 4.9 (76 reviews)',
+    category: 'apparel',
+  },
+};
+
+/* ══════════════════════════════════════════════════════════════
+   LOADER
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const loader = document.getElementById('loader');
+  const bar    = document.getElementById('loader-bar');
+  if (!loader) return;
+
+  // Animate bar to 100%
+  requestAnimationFrame(() => {
+    bar.style.width = '100%';
+  });
+
+  // Hide loader after animation
+  setTimeout(() => {
+    loader.classList.add('hidden');
+    setTimeout(() => { loader.style.display = 'none'; }, 800);
+  }, 1800);
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const cursor = document.getElementById('cursor');
+  const dot    = document.getElementById('cursor-dot');
+  if (!cursor) return;
+
+  let cx = 0, cy = 0, dx = 0, dy = 0;
+
+  document.addEventListener('mousemove', e => {
+    dx = e.clientX; dy = e.clientY;
+  });
+
+  function animCursor() {
+    cx += (dx - cx) * 0.12;
+    cy += (dy - cy) * 0.12;
+    cursor.style.left = cx + 'px';
+    cursor.style.top  = cy + 'px';
+    dot.style.left    = dx + 'px';
+    dot.style.top     = dy + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+})();
+
+document.addEventListener('mouseover', e => {
+  if (e.target.closest('a, button, .product-card, .filter-tab, .testi-nav-btn'))
+    document.body.classList.add('cursor-hover');
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest('a, button, .product-card, .filter-tab, .testi-nav-btn'))
+    document.body.classList.remove('cursor-hover');
+});
+
+/* ══════════════════════════════════════════════════════════════
+   NAV SCROLL EFFECT
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE NAV
+   ══════════════════════════════════════════════════════════════ */
+function toggleMobileNav() {
+  const overlay   = document.getElementById('mobile-nav-overlay');
+  const hamburger = document.getElementById('hamburger');
+  overlay.classList.toggle('open');
+  hamburger.classList.toggle('open');
+  document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-nav-overlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   THREE.JS HERO CANVAS
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  const W = () => canvas.parentElement.clientWidth;
+  const H = () => canvas.parentElement.clientHeight;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(W(), H());
+  renderer.setClearColor(0x000000, 0);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, W() / H(), 0.1, 100);
+  camera.position.set(0, 0, 8);
+
+  // Lights
+  scene.add(new THREE.AmbientLight(0xfff8e7, 0.6));
+  const sun = new THREE.DirectionalLight(0xfff4d0, 1.8);
+  sun.position.set(5, 10, 6);
+  scene.add(sun);
+  const fill = new THREE.PointLight(0xd4b896, 1.2, 30);
+  fill.position.set(-6, -4, 3);
+  scene.add(fill);
+  const rim = new THREE.PointLight(0xf5c842, 0.4, 20);
+  rim.position.set(0, -8, -4);
+  scene.add(rim);
+
+  // Materials
+  const matBlack  = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.6, roughness: 0.2 });
+  const matOak    = new THREE.MeshStandardMaterial({ color: 0xb8894a, metalness: 0.0, roughness: 0.7 });
+  const matWhite  = new THREE.MeshStandardMaterial({ color: 0xf5f0e8, metalness: 0.1, roughness: 0.4 });
+  const matGreen  = new THREE.MeshStandardMaterial({ color: 0x4a7c59, metalness: 0.1, roughness: 0.6 });
+  const matYellow = new THREE.MeshStandardMaterial({ color: 0xf5c842, metalness: 0.4, roughness: 0.3, emissive: 0xf5c842, emissiveIntensity: 0.12 });
+  const matBrass  = new THREE.MeshStandardMaterial({ color: 0xb8922a, metalness: 0.9, roughness: 0.1 });
+  const matCream  = new THREE.MeshStandardMaterial({ color: 0xf2ede4, metalness: 0.0, roughness: 0.5 });
+
+  const objects = [];
+
+  function makeDome(mat, scale) {
+    const g = new THREE.Group();
+    const hemiG = new THREE.SphereGeometry(0.55, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+    g.add(new THREE.Mesh(hemiG, mat));
+    g.add(Object.assign(new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.03, 8, 48), matBrass)));
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.6, 12), mat);
+    stem.position.y = 0.6;
+    g.add(stem);
+    g.scale.setScalar(scale || 1);
+    return g;
+  }
+
+  function makeCone(mat, h, r) {
+    const g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.ConeGeometry(r || 0.5, h || 0.9, 48), mat));
+    return g;
+  }
+
+  function makeCap() {
+    const g = new THREE.Group();
+    const crown = new THREE.Mesh(new THREE.SphereGeometry(0.38, 32, 16, 0, Math.PI * 2, 0, Math.PI * 0.7), matBlack);
+    crown.rotation.x = 0.2;
+    g.add(crown);
+    const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.48, 0.06, 32), matBlack);
+    brim.position.y = -0.18;
+    brim.scale.z = 0.65;
+    brim.position.z = 0.08;
+    g.add(brim);
+    const badge = new THREE.Mesh(new THREE.CircleGeometry(0.1, 24), matWhite);
+    badge.position.set(0, 0.1, 0.37);
+    badge.rotation.x = -0.3;
+    g.add(badge);
+    return g;
+  }
+
+  function makePin() {
+    const g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.04, 12, 48), matBrass));
+    const inner = new THREE.Mesh(new THREE.CircleGeometry(0.2, 48), matYellow);
+    inner.position.z = 0.02;
+    g.add(inner);
+    const ray = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.025, 8, 24), matBrass);
+    ray.position.z = 0.03;
+    g.add(ray);
+    return g;
+  }
+
+  function makeClock() {
+    const g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.6, 0.42), matBlack));
+    [-0.2, 0.2].forEach(x => {
+      const face = new THREE.Mesh(new THREE.CircleGeometry(0.18, 32), matWhite);
+      face.position.set(x, 0, 0.215);
+      g.add(face);
+      const hand = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.12, 0.01), matBlack);
+      hand.position.set(x, 0.04, 0.23);
+      g.add(hand);
+    });
+    const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.06, 16), matBlack);
+    btn.position.set(-0.28, 0.35, 0);
+    btn.rotation.x = Math.PI / 2;
+    g.add(btn);
+    return g;
+  }
+
+  function makeVase() {
+    const g = new THREE.Group();
+    const pts = [];
+    for (let i = 0; i <= 24; i++) {
+      const t = i / 24;
+      const y = t * 1.2 - 0.6;
+      const r = 0.18 + 0.22 * Math.sin(t * Math.PI) + (t < 0.15 ? (0.15 - t) * 0.8 : 0);
+      pts.push(new THREE.Vector2(r, y));
+    }
+    g.add(new THREE.Mesh(new THREE.LatheGeometry(pts, 32), matCream));
+    return g;
+  }
+
+  // Populate scene
+  const dome1 = makeDome(matBlack, 1.2);
+  dome1.position.set(2.8, 0.8, -1.5);
+  dome1.rotation.set(0.1, -0.4, 0);
+  scene.add(dome1);
+  objects.push({ mesh: dome1, floatSpeed: 0.6, floatAmp: 0.18, rotSpeed: 0.005, phase: 0 });
+
+  const dome2 = makeDome(matWhite, 0.75);
+  dome2.position.set(-3.2, -0.5, -2);
+  dome2.rotation.y = 0.8;
+  scene.add(dome2);
+  objects.push({ mesh: dome2, floatSpeed: 0.5, floatAmp: 0.14, rotSpeed: -0.004, phase: 1.2 });
+
+  const cones = [[1.0, 0.55, -1.2, 1.2, -0.5, 0.05], [0.55, 0.32, -0.3, 1.4, -0.5, 0], [0.78, 0.42, 0.6, 1.3, -0.5, 0]];
+  cones.forEach(([h, r, x, y, z, rz], i) => {
+    const c = makeCone(matGreen, h, r);
+    c.position.set(x, y, z);
+    c.rotation.z = rz;
+    scene.add(c);
+    objects.push({ mesh: c, floatSpeed: 0.65 + i * 0.05, floatAmp: 0.1 + i * 0.015, rotSpeed: 0.003, phase: i * 0.7 });
+  });
+
+  const cap = makeCap();
+  cap.position.set(0.5, -1.2, 0.2);
+  cap.rotation.y = -0.5;
+  scene.add(cap);
+  objects.push({ mesh: cap, floatSpeed: 0.55, floatAmp: 0.10, rotSpeed: -0.006, phase: 3.0 });
+
+  const pin = makePin();
+  pin.position.set(3.5, -1.0, 0.5);
+  pin.rotation.y = 0.3;
+  scene.add(pin);
+  objects.push({ mesh: pin, floatSpeed: 0.9, floatAmp: 0.08, rotSpeed: 0.012, phase: 0.8 });
+
+  const clock = makeClock();
+  clock.position.set(-3.0, 0.9, 0.2);
+  clock.rotation.y = 0.6;
+  scene.add(clock);
+  objects.push({ mesh: clock, floatSpeed: 0.45, floatAmp: 0.15, rotSpeed: -0.004, phase: 1.8 });
+
+  const vase = makeVase();
+  vase.position.set(1.8, -1.4, 0.8);
+  vase.rotation.y = 0.2;
+  scene.add(vase);
+  objects.push({ mesh: vase, floatSpeed: 0.52, floatAmp: 0.12, rotSpeed: 0.007, phase: 2.3 });
+
+  // Particles
+  const pCount = 1400;
+  const pGeo   = new THREE.BufferGeometry();
+  const pPos   = new Float32Array(pCount * 3);
+  const pColors = new Float32Array(pCount * 3);
+  const palette = [[0.96, 0.78, 0.26], [0.29, 0.49, 0.35], [0.97, 0.94, 0.89], [0.53, 0.52, 0.47]];
+  for (let i = 0; i < pCount; i++) {
+    const r = 5 + Math.random() * 9;
+    const t = Math.random() * Math.PI * 2;
+    const p = Math.acos(2 * Math.random() - 1);
+    pPos[i * 3]     = r * Math.sin(p) * Math.cos(t);
+    pPos[i * 3 + 1] = r * Math.sin(p) * Math.sin(t);
+    pPos[i * 3 + 2] = r * Math.cos(p);
+    const c = palette[Math.floor(Math.random() * palette.length)];
+    pColors[i * 3]     = c[0];
+    pColors[i * 3 + 1] = c[1];
+    pColors[i * 3 + 2] = c[2];
+  }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  pGeo.setAttribute('color',    new THREE.BufferAttribute(pColors, 3));
+  const pMat = new THREE.PointsMaterial({ size: 0.028, vertexColors: true, transparent: true, opacity: 0.55 });
+  const particles = new THREE.Points(pGeo, pMat);
+  scene.add(particles);
+
+  // Mouse parallax
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  document.addEventListener('mousemove', e => {
+    mx = (e.clientX / innerWidth  - 0.5) * 2.8;
+    my = (e.clientY / innerHeight - 0.5) * -1.6;
+  });
+
+  // Animate
+  const clock3 = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = clock3.getElapsedTime();
+
+    tx += (mx - tx) * 0.035;
+    ty += (my - ty) * 0.035;
+    camera.position.x = tx;
+    camera.position.y = ty;
+    camera.lookAt(0, 0, 0);
+
+    objects.forEach(o => {
+      const baseY = o.mesh.position.y;
+      o.mesh.position.y = baseY + Math.sin(t * o.floatSpeed + o.phase) * o.floatAmp * 0.016;
+      o.mesh.rotation.y += o.rotSpeed;
+    });
+
+    particles.rotation.y = t * 0.018;
+    particles.rotation.x = t * 0.006;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    renderer.setSize(W(), H());
+    camera.aspect = W() / H();
+    camera.updateProjectionMatrix();
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   3D CARD TILT EFFECT
+   ══════════════════════════════════════════════════════════════ */
+function init3DTilt() {
+  document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;  // -0.5 to 0.5
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      const rotY = x * 14;
+      const rotX = -y * 10;
+      card.style.transform  = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(6px)`;
+      card.style.boxShadow  = `${-x * 24}px ${-y * 18}px 36px rgba(0,0,0,0.10)`;
+      card.style.transition = 'box-shadow 0.1s, transform 0.05s';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform  = '';
+      card.style.boxShadow  = '';
+      card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s';
+    });
+    // Open modal on card click (not on button clicks — those stopPropagation)
+    card.addEventListener('click', () => {
+      const id = card.dataset.productId;
+      if (id) openModal(id);
+    });
+  });
+}
+// Init after DOM is ready
+document.addEventListener('DOMContentLoaded', init3DTilt);
+// Also run after a short delay to catch any late-rendered cards
+setTimeout(init3DTilt, 400);
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLL REVEAL
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+  if (!els.length) return;
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
+        const idx = siblings.indexOf(entry.target);
+        setTimeout(() => entry.target.classList.add('visible'), idx * 80);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.10 });
+
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   PARALLAX IMAGES
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const imgs = document.querySelectorAll('.parallax-img');
+  if (!imgs.length) return;
+  window.addEventListener('scroll', () => {
+    imgs.forEach(img => {
+      const speed  = parseFloat(img.dataset.speed) || 0.1;
+      const rect   = img.closest('.feature-media').getBoundingClientRect();
+      const offset = (rect.top + rect.height / 2 - innerHeight / 2) * speed;
+      img.style.transform = `translateY(${offset}px)`;
+    });
+  }, { passive: true });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   FILTER TABS
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const tabs  = document.querySelectorAll('.filter-tab');
+  const cards = document.querySelectorAll('.product-card');
+  if (!tabs.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+
+      cards.forEach((card, i) => {
+        const cat  = card.dataset.category;
+        const show = filter === 'all' || cat === filter;
+        card.style.transition = `opacity 0.35s ${i * 0.03}s, transform 0.35s ${i * 0.03}s`;
+        card.style.opacity    = show ? '1'    : '0.08';
+        card.style.transform  = show ? ''     : 'scale(0.96)';
+        card.style.pointerEvents = show ? 'auto' : 'none';
+      });
+    });
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   WISHLIST
+   ══════════════════════════════════════════════════════════════ */
+const wishlist = new Set();
+
+function toggleWishlist(btn) {
+  const card = btn.closest('.product-card');
+  const name = card ? card.querySelector('.product-name')?.textContent : 'item';
+  const id   = card?.dataset.productId || name;
+
+  if (wishlist.has(id)) {
+    wishlist.delete(id);
+    btn.classList.remove('active');
+    btn.textContent = '♡';
+    showToast('Removed from wishlist');
+  } else {
+    wishlist.add(id);
+    btn.classList.add('active');
+    btn.textContent = '♥';
+    showToast(`${name} wishlisted ♥`);
+    btn.style.transform = 'scale(1.4)';
+    setTimeout(() => { btn.style.transform = ''; }, 300);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CART
+   ══════════════════════════════════════════════════════════════ */
+const cart = { items: [], total: 0 };
+
+function toggleCart() {
+  document.getElementById('cart-drawer').classList.toggle('open');
+  document.getElementById('cart-overlay').classList.toggle('open');
+}
+document.getElementById('cart-overlay').addEventListener('click', toggleCart);
+
+function addToCart(name, priceLabel, priceNum, imgSrc) {
+  const existing = cart.items.find(i => i.name === name);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.items.push({ name, priceLabel, priceNum, imgSrc, qty: 1 });
+  }
+  cart.total += priceNum;
+  renderCart();
+  showToast(`${name} added ✓`);
+  updateCartCount();
+  flyToCart();
+}
+
+function changeCartQty(name, delta) {
+  const item = cart.items.find(i => i.name === name);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) {
+    cart.total -= item.priceNum * Math.abs(item.qty - delta);
+    // Recalculate total properly
+    cart.items = cart.items.filter(i => i.name !== name);
+  } else {
+    cart.total += item.priceNum * delta;
+  }
+  // Recalculate total from scratch to stay accurate
+  cart.total = cart.items.reduce((s, i) => s + i.priceNum * i.qty, 0);
+  renderCart();
+  updateCartCount();
+}
+
+function removeFromCart(name) {
+  cart.items = cart.items.filter(i => i.name !== name);
+  cart.total = cart.items.reduce((s, i) => s + i.priceNum * i.qty, 0);
+  renderCart();
+  updateCartCount();
+}
+
+function renderCart() {
+  const itemsEl  = document.getElementById('cart-items');
+  const footerEl = document.getElementById('cart-footer');
+  const totalEl  = document.getElementById('cart-total-price');
+
+  if (!cart.items.length) {
+    itemsEl.innerHTML = `
+      <div class="cart-empty">
+        <div class="cart-empty-icon">○</div>
+        <p>Nothing here yet.</p>
+        <span>Add something beautiful.</span>
+      </div>`;
+    footerEl.style.display = 'none';
+    return;
+  }
+
+  itemsEl.innerHTML = cart.items.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img">
+        ${item.imgSrc
+          ? `<img src="${item.imgSrc}" alt="${item.name}" loading="lazy"/>`
+          : `<div style="width:100%;height:100%;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--muted)">○</div>`}
+      </div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${item.priceLabel}</div>
+        <div class="cart-item-qty">
+          <button class="cart-qty-btn" onclick="changeCartQty('${item.name}', -1)">−</button>
+          <span class="cart-qty-num">${item.qty}</span>
+          <button class="cart-qty-btn" onclick="changeCartQty('${item.name}', 1)">+</button>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart('${item.name}')">Remove</button>
+    </div>
+  `).join('');
+
+  totalEl.textContent    = '₹' + cart.total.toLocaleString('en-IN');
+  footerEl.style.display = 'block';
+}
+
+function updateCartCount() {
+  const countEl = document.getElementById('cart-count');
+  const total = cart.items.reduce((s, i) => s + i.qty, 0);
+  countEl.textContent = total;
+  countEl.style.transform = 'scale(1.5)';
+  setTimeout(() => { countEl.style.transform = ''; }, 250);
+}
+
+function flyToCart() {
+  const cartBtn = document.querySelector('.nav-cart-btn');
+  if (!cartBtn) return;
+  const rect = cartBtn.getBoundingClientRect();
+
+  const dot = document.createElement('div');
+  dot.style.cssText = `
+    position:fixed;width:10px;height:10px;border-radius:50%;
+    background:var(--yellow);z-index:500;pointer-events:none;
+    left:${innerWidth / 2}px;top:${innerHeight / 2}px;
+    transition:left 0.6s cubic-bezier(0.16,1,0.3,1),
+               top 0.6s cubic-bezier(0.16,1,0.3,1),
+               opacity 0.6s, transform 0.6s;
+  `;
+  document.body.appendChild(dot);
+  requestAnimationFrame(() => {
+    dot.style.left      = (rect.left + rect.width / 2) + 'px';
+    dot.style.top       = (rect.top + rect.height / 2) + 'px';
+    dot.style.opacity   = '0';
+    dot.style.transform = 'scale(0.2)';
+  });
+  setTimeout(() => dot.remove(), 700);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRODUCT MODAL
+   ══════════════════════════════════════════════════════════════ */
+let modalQty = 1;
+let currentModalProduct = null;
+
+function openModal(productId) {
+  const p = PRODUCTS[productId];
+  if (!p) return;
+
+  currentModalProduct = p;
+  modalQty = 1;
+
+  document.getElementById('modal-img').src         = p.img;
+  document.getElementById('modal-tag').textContent  = `— ${p.tag}`;
+  document.getElementById('modal-name').textContent = p.name;
+  document.getElementById('modal-desc').textContent = p.desc;
+  document.getElementById('modal-price').textContent = p.price;
+  document.getElementById('modal-rating').textContent = p.rating;
+  document.getElementById('modal-qty-val').textContent = '1';
+  document.getElementById('modal-add-btn').onclick = () => {
+    addToCart(p.name, p.price, p.priceNum * modalQty, p.img);
+    closeModal();
+  };
+
+  const modal = document.getElementById('product-modal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(() => {
+    modal.style.opacity = '1';
+  });
+}
+
+function closeModal() {
+  const modal = document.getElementById('product-modal');
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+  currentModalProduct = null;
+  modalQty = 1;
+}
+
+function changeModalQty(delta) {
+  modalQty = Math.max(1, Math.min(10, modalQty + delta));
+  document.getElementById('modal-qty-val').textContent = modalQty;
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ══════════════════════════════════════════════════════════════
+   TESTIMONIALS SLIDER
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const track    = document.getElementById('testi-track');
+  const prevBtn  = document.getElementById('testi-prev');
+  const nextBtn  = document.getElementById('testi-next');
+  if (!track) return;
+
+  let current    = 0;
+  const getVisible = () => window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+
+  function getMax() {
+    const cards = track.querySelectorAll('.testimonial-card');
+    return Math.max(0, cards.length - getVisible());
+  }
+
+  function slide() {
+    const cards     = track.querySelectorAll('.testimonial-card');
+    const cardWidth = cards[0] ? cards[0].offsetWidth + 24 : 0;
+    track.style.transform = `translateX(-${current * cardWidth}px)`;
+  }
+
+  prevBtn.addEventListener('click', () => {
+    current = Math.max(0, current - 1);
+    slide();
+  });
+  nextBtn.addEventListener('click', () => {
+    current = Math.min(getMax(), current + 1);
+    slide();
+  });
+
+  window.addEventListener('resize', slide, { passive: true });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   ANIMATED COUNTERS
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const nums = document.querySelectorAll('.stat-number[data-target]');
+  if (!nums.length) return;
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el     = entry.target;
+        const target = parseInt(el.dataset.target);
+        const dur    = 2000;
+        const start  = performance.now();
+        function tick(now) {
+          const prog = Math.min((now - start) / dur, 1);
+          const ease = 1 - Math.pow(1 - prog, 3);
+          el.textContent = Math.round(ease * target).toLocaleString('en-IN');
+          if (prog < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  nums.forEach(el => obs.observe(el));
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   BACK TO TOP
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  const btn = document.getElementById('back-to-top');
+  if (!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 600);
+  }, { passive: true });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   NEWSLETTER
+   ══════════════════════════════════════════════════════════════ */
+function handleNewsletter(e) {
+  e.preventDefault();
+  e.target.querySelector('input').value = '';
+  showToast('Welcome to the Newsletter™ ✓');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
+</body>
+</html>
